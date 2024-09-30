@@ -1,0 +1,8 @@
+network:
+  version: 2
+  ethernets:
+    eth1:
+      dhcp4: no
+      match:
+        macaddress: "DE:EF:52:8C:24:1C"
+      addresses: [169.254.64.100/24]

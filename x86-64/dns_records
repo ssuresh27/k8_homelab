@@ -1,0 +1,5 @@
+127.0.0.1 localhost
+192.168.65.111 kubemaster1 
+192.168.65.201 kubeworker1 
+192.168.65.202 kubeworker2 
+192.168.65.51 nfserver 

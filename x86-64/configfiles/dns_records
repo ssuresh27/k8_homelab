@@ -1,0 +1,4 @@
+10.1.0.199 nfsserver
+10.1.0.111 kubemaster1 
+10.1.0.201 kubeworker1 
+10.1.0.199 nfsserver
