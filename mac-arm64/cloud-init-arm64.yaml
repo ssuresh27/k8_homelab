@@ -3,8 +3,17 @@ users:
   - name: ubuntu
     sudo: ALL=(ALL) NOPASSWD:ALL
     ssh_authorized_keys:
-    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDO2H4g/GJSQ9J3omcGTyLU3NS7jeyspEgetynOnmEFpqiUBvmrC26Sdo4uAQKqp4eGg9DE9yE7JKc/PxzVqKcKFj6EEyS37/A2UfgNsDKDElICHUi0GiTujkYvdQcU3cnpS3Yep0KVyAjAiRFESHpWhz9OtGTGIslR23WDFDd/2nIQBRxK3hucLUQIvIsl0MbGqU4R9Hbvhi5HgY9/ht42qIcb9dIq41O2/92K44mFgiJH/IjZanMJTMVdHVr27XGvVlbkuuzt+H7ZYRNhn6pjhClw8ipoy++28Hu170O5qHL/ybUNMgxVQBAiVmQNWB9WHU/c2VBO3vD+6m3t9/wY3+Bdq4LZ2InQl+VPPc95vCmYIIOuvRbdYjQ9XrEDsnzr9J0fo7TQ1JUxXPMs33SFp918BQh4agYl2oq9YpxQL/pJXBgjEa4BlhRXKZAt1GLQgPEqRQBPR5hOXR+/Z3u6yROdflE3QdJWTpbsdjBaC/4p90pdIFBrirmPT3q0eR0= ubuntu
-
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIItfWOTPgoV2osx+vbDh4lTSkR1ao2Q53Ei3cJ6/Q79q ubuntu
+    # ssh_keys:
+    #   rsa_private: |
+    #     -----BEGIN OPENSSH PRIVATE KEY-----
+    #     b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+    #     QyNTUxOQAAACCLX1jkz4KFdqLMfr2w4eJU0pEdWqNkOdxIt3Cev0O/agAAAJCOcM2HjnDN
+    #     hwAAAAtzc2gtZWQyNTUxOQAAACCLX1jkz4KFdqLMfr2w4eJU0pEdWqNkOdxIt3Cev0O/ag
+    #     AAAEC1k4JeYDEK6ET6YfE6kaamdZJRioLI3E3zsmBlHqkYLYtfWOTPgoV2osx+vbDh4lTS
+    #     kR1ao2Q53Ei3cJ6/Q79qAAAABnVidW50dQECAwQFBgc=
+    #     -----END OPENSSH PRIVATE KEY-----
+    #   rsa_public: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIItfWOTPgoV2osx+vbDh4lTSkR1ao2Q53Ei3cJ6/Q79q ubuntu
 packages:
   - openssl
   - apt-transport-https
@@ -29,24 +38,28 @@ write_files:
     net.ipv4.ip_forward = 1
   path: /etc/sysctl.d/k8s.conf
 
-bootcmd:
-  - echo 127.0.0.1 localhost >> /etc/hosts
-  - echo 169.254.144.111 conrol01 >> /etc/hosts
-  - echo 169.254.144.112 conrol02 >> /etc/hosts
-  - echo 169.254.144.201 worker01 >> /etc/hosts
-  - echo 169.254.144.202 worker02 >> /etc/hosts
-  - echo 169.254.144.203 worker03 >> /etc/hosts
-  - echo 169.254.144.204 worker04 >> /etc/hosts
-  - echo 169.254.144.205 worker05 >> /etc/hosts
-  - echo 169.254.144.199 nfsserver >> /etc/hosts
+# - content: |
+#     #!/bin/bash
+#     echo 127.0.0.1 localhost >> /etc/hosts
+#     echo 169.254.124.111 conrol01 >> /etc/hosts
+#     echo 169.254.124.112 conrol02 >> /etc/hosts
+#     echo 169.254.124.201 worker01 >> /etc/hosts
+#     echo 169.254.124.202 worker02 >> /etc/hosts
+#     echo 169.254.124.203 worker03 >> /etc/hosts
+#     echo 169.254.124.204 worker04 >> /etc/hosts
+#     echo 169.254.124.205 worker05 >> /etc/hosts
+#     echo 169.254.124.199 nfsserver >> /etc/hosts
+#     echo 'Script executed successfully!' >> /etc/hosts
+#   path: /run/scripts/test-script.sh
 
 runcmd:
+  # - [ sh, "/run/scripts/test-script.sh" ]
   - sudo sysctl --system
   - sudo  sysctl net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward
 
   # Install containerd
-  - curl -LO https://github.com/containerd/containerd/releases/download/v1.7.22/containerd-1.7.22-linux-amd64.tar.gz
-  - sudo tar Cxzvf /usr/local containerd-1.7.22-linux-amd64.tar.gz
+  - curl -LO https://github.com/containerd/containerd/releases/download/v1.7.22/containerd-1.7.22-linux-arm64.tar.gz
+  - sudo tar Cxzvf /usr/local containerd-1.7.22-linux-arm64.tar.gz
   - curl -LO https://raw.githubusercontent.com/containerd/containerd/main/containerd.service
   - sudo mkdir -p /usr/local/lib/systemd/system/
   - sudo mv containerd.service /usr/local/lib/systemd/system/
@@ -57,14 +70,13 @@ runcmd:
   - sudo systemctl enable --now containerd
 
   # Install RUNC
-  - curl -LO https://github.com/opencontainers/runc/releases/download/v1.1.14/runc.amd64
-  - sudo install -m 755 runc.amd64 /usr/local/sbin/runc
-  
-  # Install CNI
-  - curl -LO https://github.com/containernetworking/plugins/releases/download/v1.5.1/cni-plugins-linux-amd64-v1.5.1.tgz
-  - sudo mkdir -p /opt/cni/bin
-  - sudo tar Cxzf /opt/cni/bin cni-plugins-linux-amd64-v1.5.1.tgz
+  - curl -LO https://github.com/opencontainers/runc/releases/download/v1.1.14/runc.arm64
+  - sudo tar Cxzvf /usr/local containerd-1.7.22-linux-arm64.tar.gz
 
+  # Install CNI
+  - curl -LO https://github.com/containernetworking/plugins/releases/download/v1.5.1/cni-plugins-linux-arm-v1.5.1.tgz
+  - sudo mkdir -p /opt/cni/bin
+  - sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-arm-v1.5.1.tgz
   # Install Kubeadm
   - sudo apt-get update
   - curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg

@@ -18,14 +18,14 @@ packages:
   - gpg
 
 bootcmd:
-  - echo 169.254.124.111 conrol01 >> /etc/hosts
-  - echo 169.254.124.112 conrol02 >> /etc/hosts
-  - echo 169.254.124.201 worker01 >> /etc/hosts
-  - echo 169.254.124.202 worker02 >> /etc/hosts
-  - echo 169.254.124.203 worker03 >> /etc/hosts
-  - echo 169.254.124.204 worker04 >> /etc/hosts
-  - echo 169.254.124.205 worker05 >> /etc/hosts
-  - echo 169.254.124.199 nfsserver >> /etc/hosts
+  - echo 169.254.144.111 conrol01 >> /etc/hosts
+  - echo 169.254.144.112 conrol02 >> /etc/hosts
+  - echo 169.254.144.201 worker01 >> /etc/hosts
+  - echo 169.254.144.202 worker02 >> /etc/hosts
+  - echo 169.254.144.203 worker03 >> /etc/hosts
+  - echo 169.254.144.204 worker04 >> /etc/hosts
+  - echo 169.254.144.205 worker05 >> /etc/hosts
+  - echo 169.254.144.199 nfsserver >> /etc/hosts
 runcmd:
   - sudo mkdir /data
   - sudo chown -R nobody:nogroup /data
@@ -33,4 +33,4 @@ runcmd:
   - echo '/data *(rw,sync,no_subtree_check)' |  sudo tee -a /etc/exports > /dev/null
   - sudo exportfs -a
   - sudo systemctl restart nfs-kernel-server
-  - sudo ufw allow from 169.254.124.0/24 proto tcp to any port 22
+  - sudo ufw allow from 10.0.0.0/24 proto tcp to any port 22
