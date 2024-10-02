@@ -3,9 +3,8 @@
 Setup Kubernetes cluster using mutlipass on Mac (ARM64) and windows (X86-64/amd64) for home lab with default OS hypervisor (MAC QEMU, Windows Hyper-V).
 In addtion, create a NFS server to privission pvc for statefull apps.
 
-<span style="color:red">
 **MAC setup is in-progress**
-</span>
+
 
 ## VM Hardware Requirements
 - 8 GB of RAM (Preferably 16 GB)
@@ -24,10 +23,7 @@ In addtion, create a NFS server to privission pvc for statefull apps.
 - [Create a new network for static IP](https://www.madalin.me/devops/2022/250/multipass-permanent-ip-private-network-hyperv-windows.html)
 
 
-
-<span style="color:blue">
 ## **Windows**
-</span>
 
 - Create a new private subnet in Windows Hyper-V for static IP
 - if the static ip subnet is in 169.0.0.0, k8 cluster will not work. Use below to change the subnet
@@ -163,6 +159,8 @@ helm install csi-driver-nfs csi-driver-nfs/csi-driver-nfs --namespace kube-syste
 
 And create a storage class and test pvc & pod
 
+```bash
 kubectl apply -f sc/nfs-storageclass.yaml
 kubectl apply -f sc/test-pvc.yaml
 kubectl apply -f sc/test-pvc-pod.yaml
+```
