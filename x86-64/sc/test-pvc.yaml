@@ -9,4 +9,4 @@ spec:
     requests:
       storage: 1Gi
   volumeMode: Filesystem
-  storageClassName: nfs-client
+  storageClassName: nfs-csi

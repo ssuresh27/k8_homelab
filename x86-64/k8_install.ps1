@@ -7,13 +7,14 @@ function mac_random {
 }
 
 echo "Starting ControlPane"
+$subnet="10.0.0"
 $i = 1
 $control = 1
 for (; $i -le $control; $i++) {
   $MACADDR = mac_random
-  $ip = "10.0.0.11${i}"
+  $ip = "${subnet}.11${i}"
   # Write-Host $MACADDR
-  multipass launch --disk 5G --memory 2G --cpus 2 --name control0${i} --cloud-init cloud-init-win.yaml --network name=multipass,mode=manual,mac="${MACADDR}" noble
+  multipass launch --disk 20G --memory 2G --cpus 2 --name control0${i} --cloud-init cloud-init-win.yaml --network name=multipass,mode=manual,mac="${MACADDR}" noble
 $yamlContent = @"
 network:
   version: 2
@@ -36,9 +37,9 @@ $i = 1
 $worker = 3
 for (; $i -le $worker; $i++) {
   $MACADDR = mac_random
-  $ip = "10.0.0.20${i}"
+  $ip = "${subnet}.20${i}"
   # Write-Host $MACADDR
-  multipass launch --disk 5G --memory 2G --cpus 2 --name worker0${i} --cloud-init cloud-init-win.yaml --network name=multipass,mode=manual,mac="${MACADDR}" noble
+  multipass launch --disk 20G --memory 1G --cpus 1 --name worker0${i} --cloud-init cloud-init-win.yaml --network name=multipass,mode=manual,mac="${MACADDR}" noble
 $yamlContent = @"
 network:
   version: 2
@@ -63,9 +64,9 @@ $i = 1
 $nfs = 1
 for (; $i -le $nfs; $i++) {
   $MACADDR = mac_random
-  $ip = "10.0.0.199"
+  $ip = "${subnet}.199"
   # Write-Host $MACADDR
-  multipass launch --disk 5G --memory 2G --cpus 2 --name nfsserver --cloud-init cloud-init-win-nfs.yaml --network name=multipass,mode=manual,mac="${MACADDR}" noble
+  multipass launch --disk 20G --memory 1G --cpus 1 --name nfsserver --cloud-init cloud-init-win-nfs.yaml --network name=multipass,mode=manual,mac="${MACADDR}" noble
 
 $yamlContent = @"
 network:
