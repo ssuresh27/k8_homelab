@@ -23,4 +23,6 @@ In addtion, create a NFS server to privission pvc for statefull apps.
 - [Create a new network for static IP](https://www.madalin.me/devops/2022/250/multipass-permanent-ip-private-network-hyperv-windows.html)
 
 [MAC](mac-arm64/README.MD) **Inprogres**
+
+
 [Windows](x86-64/README.MD)
