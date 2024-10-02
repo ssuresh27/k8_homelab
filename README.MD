@@ -71,9 +71,21 @@ In kubemaster1 /tmp/op/tmp/kubeadm_op.txt
 
 #### Storage class with NFS already created
 
+```powershell
+Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name 'vEthernet (multipass)').ifIndex
 
- Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name 'vEthernet (multipass)').ifIndex
- 
 IPAddress         : 169.254.124.160
 InterfaceIndex    : 18
 InterfaceAlias    : vEthernet (multipass)
+
+Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name 'vEthernet (multipass)').ifIndex | Remove-NetIPAddress -confirm:$false
+New-NetIPAddress -InterfaceAlias 'vEthernet (multipass)' -IPAddress '10.0.0.1' -PrefixLength 24
+Set-DnsClientServerAddress -InterfaceAlias 'vEthernet (multipass)' -ServerAddresses ("10.0.0.15","8.8.8.8")
+
+PS C:\Git\k8_homelab> Get-NetIPAddress -InterfaceIndex (Get-NetAdapter -Name 'vEthernet (multipass)').ifIndex
+
+
+IPAddress         : 10.0.0.1
+InterfaceIndex    : 49
+InterfaceAlias    : vEthernet (multipass)
+```

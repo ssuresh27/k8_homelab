@@ -1,0 +1,36 @@
+users:
+  - default
+  - name: ubuntu
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+    - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDO2H4g/GJSQ9J3omcGTyLU3NS7jeyspEgetynOnmEFpqiUBvmrC26Sdo4uAQKqp4eGg9DE9yE7JKc/PxzVqKcKFj6EEyS37/A2UfgNsDKDElICHUi0GiTujkYvdQcU3cnpS3Yep0KVyAjAiRFESHpWhz9OtGTGIslR23WDFDd/2nIQBRxK3hucLUQIvIsl0MbGqU4R9Hbvhi5HgY9/ht42qIcb9dIq41O2/92K44mFgiJH/IjZanMJTMVdHVr27XGvVlbkuuzt+H7ZYRNhn6pjhClw8ipoy++28Hu170O5qHL/ybUNMgxVQBAiVmQNWB9WHU/c2VBO3vD+6m3t9/wY3+Bdq4LZ2InQl+VPPc95vCmYIIOuvRbdYjQ9XrEDsnzr9J0fo7TQ1JUxXPMs33SFp918BQh4agYl2oq9YpxQL/pJXBgjEa4BlhRXKZAt1GLQgPEqRQBPR5hOXR+/Z3u6yROdflE3QdJWTpbsdjBaC/4p90pdIFBrirmPT3q0eR0= ubuntu
+
+packages:
+  - openssl
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
+  - net-tools
+  - nfs-kernel-server
+  - socat
+  - gpg
+
+bootcmd:
+  - echo 169.254.144.111 conrol01 >> /etc/hosts
+  - echo 169.254.144.112 conrol02 >> /etc/hosts
+  - echo 169.254.144.201 worker01 >> /etc/hosts
+  - echo 169.254.144.202 worker02 >> /etc/hosts
+  - echo 169.254.144.203 worker03 >> /etc/hosts
+  - echo 169.254.144.204 worker04 >> /etc/hosts
+  - echo 169.254.144.205 worker05 >> /etc/hosts
+  - echo 169.254.144.199 nfsserver >> /etc/hosts
+runcmd:
+  - sudo mkdir /data
+  - sudo chown -R nobody:nogroup /data
+  - sudo chmod -R 777 /data
+  - echo '/data *(rw,sync,no_subtree_check)' |  sudo tee -a /etc/exports > /dev/null
+  - sudo exportfs -a
+  - sudo systemctl restart nfs-kernel-server
+  - sudo ufw allow from 10.0.0.0/24 proto tcp to any port 22
