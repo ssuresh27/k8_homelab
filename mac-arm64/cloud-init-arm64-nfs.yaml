@@ -3,18 +3,7 @@ users:
   - name: ubuntu
     sudo: ALL=(ALL) NOPASSWD:ALL
     ssh_authorized_keys:
-    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIItfWOTPgoV2osx+vbDh4lTSkR1ao2Q53Ei3cJ6/Q79q ubuntu
-    ssh_keys:
-      rsa_private: |
-        -----BEGIN OPENSSH PRIVATE KEY-----
-        b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
-        QyNTUxOQAAACCLX1jkz4KFdqLMfr2w4eJU0pEdWqNkOdxIt3Cev0O/agAAAJCOcM2HjnDN
-        hwAAAAtzc2gtZWQyNTUxOQAAACCLX1jkz4KFdqLMfr2w4eJU0pEdWqNkOdxIt3Cev0O/ag
-        AAAEC1k4JeYDEK6ET6YfE6kaamdZJRioLI3E3zsmBlHqkYLYtfWOTPgoV2osx+vbDh4lTS
-        kR1ao2Q53Ei3cJ6/Q79qAAAABnVidW50dQECAwQFBgc=
-        -----END OPENSSH PRIVATE KEY-----
-      rsa_public: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIItfWOTPgoV2osx+vbDh4lTSkR1ao2Q53Ei3cJ6/Q79q ubuntu
-
+    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIILzMYJwNJ90Hw6d8CKCpG+5miyXeB8lj6VBnz8Dqc81 ubuntu
 
 packages:
   - openssl
